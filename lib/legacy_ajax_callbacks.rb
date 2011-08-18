@@ -8,7 +8,7 @@ module LegacyAjaxCallbacks
         [options, '']
       else
         # We need an id to be able to attach the callback to.
-        options = ensure_existing_id(options)
+        options = adjust_element_id(options)
         # Return updated options hash and inline JS.
         [remove_callbacks(options), inline_javascript(options)]
       end
@@ -28,9 +28,14 @@ module LegacyAjaxCallbacks
         (options.keys & LEGACY_AJAX_CALLBACKS).empty?
       end
 
-      # Expects an options hash and ensures an existing id to attach the callback to.
-      def ensure_existing_id(options)
+      # Adjusts calls to the element itself by updating its id.
+      def adjust_element_id(options)
+        # Ensure an existing id to attach the callback to.
         options[:id] = "legacy_id_#{options.object_id}" unless options.keys.include?(:id)
+        # Replace occurrences of currentElement with the actual element id.
+        LEGACY_AJAX_CALLBACKS.each do |callback|
+          options[callback].try(:gsub!, 'currentElement', "'##{options[:id]}'")
+        end
         options
       end
 
