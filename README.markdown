@@ -1,7 +1,8 @@
 LegacyAjaxCallbacks
 ======================
 
-This plugin re-enables inline AJAX callbacks in Rails 3 and allows you to continue using your old Rails 2 callbacks, until your done porting all your views to the use of unobstrusive JavaScript. I highly recommend that transition to an unobstrusive approach, as it will make your code much cleaner.
+This plugin re-enables inline AJAX callbacks in Rails 3 and allows you to continue using your old Rails 2 callbacks, until you are done porting all 
+your views to the use of unobstrusive JavaScript. I highly recommend that transition to an unobstrusive approach, as it will make your code much cleaner.
 
 Some links for further reference on that topic:
 
