@@ -5,9 +5,9 @@ This plugin re-enables inline AJAX callbacks in Rails 3 and allows you to contin
 
 Some links for further reference on that topic:
 
-    http://www.alfajango.com/blog/rails-3-remote-links-and-forms/
+  http://www.alfajango.com/blog/rails-3-remote-links-and-forms/
 
-    http://www.simonecarletti.com/blog/2010/06/unobtrusive-javascript-in-rails-3/
+  http://www.simonecarletti.com/blog/2010/06/unobtrusive-javascript-in-rails-3/
 
 
 Example
