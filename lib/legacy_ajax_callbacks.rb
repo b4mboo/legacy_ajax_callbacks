@@ -25,8 +25,9 @@ module LegacyAjaxCallbacks
       # Expects an options hash and returns a boolean stating if it is free of
       # any of the supported legacy AJAX callbacks.
       def no_ajax_callbacks?(options)
-        # Check if options and callbacks have a common subset.
-        (options.keys & LEGACY_AJAX_CALLBACKS).empty?
+        # Check if options and callbacks have a common subset or if :update key
+        # is used.
+        (options.keys & (LEGACY_AJAX_CALLBACKS + [:update])).empty?
       end
 
       # Adjusts calls to the element itself by updating its id.
@@ -61,6 +62,9 @@ module LegacyAjaxCallbacks
         end
         # :loaded, :interactive and :complete get merged into ajax:complete.
         complete = options.values_at(:loaded, :interactive, :complete).compact!
+        if options[:update]
+          complete << "$('##{options[:update]}').html(xhr.responseText);"
+        end
         unless complete.empty?
           callbacks += ".live('ajax:complete', function(evt, xhr, status){#{complete.join('; ')}})"
         end
