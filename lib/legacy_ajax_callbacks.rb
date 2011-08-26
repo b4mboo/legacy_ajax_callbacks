@@ -4,6 +4,7 @@ module LegacyAjaxCallbacks
 
     # Enables compatibility for legacy ajax callbacks.
     def enable(options)
+      options = options.symbolize_keys
       if no_ajax_callbacks?(options)
         [options, '']
       else
