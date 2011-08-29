@@ -27,7 +27,7 @@ module LegacyAjaxCallbacks
       def no_ajax_callbacks?(options)
         # Check if options and callbacks have a common subset or if :update key
         # is used.
-        (options.keys & (LEGACY_AJAX_CALLBACKS + [:update])).empty?
+        (options.keys & (LEGACY_AJAX_CALLBACKS + [:update, :data])).empty?
       end
 
       # Adjusts calls to the element itself by updating its id.
@@ -51,6 +51,10 @@ module LegacyAjaxCallbacks
         callbacks = ''
         # :before and :loading get merged into ajax:beforeSend.
         before_send = options.values_at(:before, :loading).compact!
+        if options[:data]
+          before_send << "xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')"
+          before_send << "settings.data = $.param(#{options[:data].to_json})"
+        end
         unless before_send.empty?
           callbacks += ".live('ajax:beforeSend', function(evt, xhr, settings){#{before_send.join('; ')}})"
         end
