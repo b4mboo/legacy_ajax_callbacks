@@ -21,13 +21,20 @@ module LegacyAjaxCallbacks
       LEGACY_AJAX_CALLBACKS = [
         :before, :loading, :loaded, :interactive, :success, :failure, :complete
       ]
+      LEGACY_OPTIONS = [
+        :update, :data
+      ]
+
+      # Returns an array of legacy keys to improve readability.
+      def legacy_keys
+        LEGACY_AJAX_CALLBACKS + LEGACY_OPTIONS
+      end
 
       # Expects an options hash and returns a boolean stating if it is free of
       # any of the supported legacy AJAX callbacks.
       def no_ajax_callbacks?(options)
-        # Check if options and callbacks have a common subset or if :update key
-        # is used.
-        (options.keys & (LEGACY_AJAX_CALLBACKS + [:update, :data])).empty?
+        # Check if options and legacy keywords have a common subset.
+        (options.keys & legacy_keys).empty?
       end
 
       # Adjusts calls to the element itself by updating its id.
@@ -43,7 +50,7 @@ module LegacyAjaxCallbacks
 
       # Remove legacy callbacks before creating the html.
       def remove_callbacks(options)
-        options.reject{|key, value| LEGACY_AJAX_CALLBACKS.include?(key)}
+        options.reject{|key, value| legacy_keys.include?(key)}
       end
 
       # Creates an inline JavaScript, that binds the callbacks to the link's id.
