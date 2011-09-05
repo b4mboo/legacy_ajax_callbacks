@@ -63,13 +63,13 @@ module LegacyAjaxCallbacks
           before_send << "settings.data = $.param(#{options[:data].to_json})"
         end
         unless before_send.empty?
-          callbacks += ".live('ajax:beforeSend', function(evt, xhr, settings){#{before_send.join('; ')}})"
+          callbacks += ".bind('ajax:beforeSend', function(evt, xhr, settings){#{before_send.join('; ')}})"
         end
         if options[:success]
-          callbacks += ".live('ajax:success', function(evt, data, status, xhr){#{options[:success]}})"
+          callbacks += ".bind('ajax:success', function(evt, data, status, xhr){#{options[:success]}})"
         end
         if options[:failure]
-          callbacks += ".live('ajax:error', function(evt, xhr, status, error) {#{options[:failure]}})"
+          callbacks += ".bind('ajax:error', function(evt, xhr, status, error) {#{options[:failure]}})"
         end
         # :loaded, :interactive and :complete get merged into ajax:complete.
         complete = options.values_at(:loaded, :interactive, :complete).compact!
@@ -77,7 +77,7 @@ module LegacyAjaxCallbacks
           complete << "$('##{options[:update]}').html(xhr.responseText);"
         end
         unless complete.empty?
-          callbacks += ".live('ajax:complete', function(evt, xhr, status){#{complete.join('; ')}})"
+          callbacks += ".bind('ajax:complete', function(evt, xhr, status){#{complete.join('; ')}})"
         end
         # Finally, return the constructed inline JavaScript.
         "<script type='text/javascript'>$(document).ready(function($){$('##{options[:id]}')#{callbacks};});</script>".html_safe
