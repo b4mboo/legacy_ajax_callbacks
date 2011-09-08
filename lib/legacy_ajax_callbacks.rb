@@ -74,7 +74,7 @@ module LegacyAjaxCallbacks
         # :loaded, :interactive and :complete get merged into ajax:complete.
         complete = options.values_at(:loaded, :interactive, :complete).compact!
         if options[:update]
-          complete << "$('##{options[:update]}').html(xhr.responseText);"
+          complete.unshift "$('##{options[:update]}').html(xhr.responseText);"
         end
         unless complete.empty?
           callbacks += ".bind('ajax:complete', function(evt, xhr, status){#{complete.join('; ')}})"
